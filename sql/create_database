@@ -1,0 +1,703 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Хост: 127.0.0.1:3306
+-- Время создания: Фев 16 2026 г., 14:21
+-- Версия сервера: 5.7.39
+-- Версия PHP: 7.2.34
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- База данных: `weather`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `api_credentials`
+--
+
+CREATE TABLE `api_credentials` (
+  `id` bigint(20) NOT NULL,
+  `source_id` bigint(20) DEFAULT NULL,
+  `api_key` varchar(255) DEFAULT NULL,
+  `rate_limit` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `api_errors`
+--
+
+CREATE TABLE `api_errors` (
+  `id` bigint(20) NOT NULL,
+  `source_id` bigint(20) DEFAULT NULL,
+  `error_code` varchar(50) DEFAULT NULL,
+  `message` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `favorites`
+--
+
+CREATE TABLE `favorites` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `alias` varchar(100) DEFAULT NULL,
+  `sort_order` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `locations`
+--
+
+CREATE TABLE `locations` (
+  `id` bigint(20) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `lat` decimal(9,6) DEFAULT NULL,
+  `lon` decimal(9,6) DEFAULT NULL,
+  `timezone` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `notification_channels`
+--
+
+CREATE TABLE `notification_channels` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `type_id` bigint(20) DEFAULT NULL,
+  `channel` varchar(20) DEFAULT NULL,
+  `enabled` tinyint(1) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `notification_logs`
+--
+
+CREATE TABLE `notification_logs` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `type_id` bigint(20) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `sent_at` timestamp NULL DEFAULT NULL,
+  `error_message` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `notification_schedule`
+--
+
+CREATE TABLE `notification_schedule` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `type_id` bigint(20) DEFAULT NULL,
+  `send_time` time DEFAULT NULL,
+  `timezone` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `notification_types`
+--
+
+CREATE TABLE `notification_types` (
+  `id` bigint(20) NOT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `update_log`
+--
+
+CREATE TABLE `update_log` (
+  `id` bigint(20) NOT NULL,
+  `source_id` bigint(20) DEFAULT NULL,
+  `last_update` timestamp NULL DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `user`
+--
+
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) NOT NULL,
+  `login` varchar(50) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `user_geo`
+--
+
+CREATE TABLE `user_geo` (
+  `user_id` bigint(20) NOT NULL,
+  `lat` decimal(9,6) DEFAULT NULL,
+  `lon` decimal(9,6) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `user_locations`
+--
+
+CREATE TABLE `user_locations` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `is_primary` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `user_settings`
+--
+
+CREATE TABLE `user_settings` (
+  `user_id` bigint(20) NOT NULL,
+  `language` varchar(10) DEFAULT NULL,
+  `units` varchar(10) DEFAULT NULL,
+  `timezone` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `weather_cache`
+--
+
+CREATE TABLE `weather_cache` (
+  `id` bigint(20) NOT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `data` json DEFAULT NULL,
+  `cached_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `weather_data`
+--
+
+CREATE TABLE `weather_data` (
+  `id` bigint(20) NOT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `temperature` decimal(5,2) DEFAULT NULL,
+  `humidity` int(11) DEFAULT NULL,
+  `pressure` int(11) DEFAULT NULL,
+  `precipitation` decimal(5,2) DEFAULT NULL,
+  `weather_type` varchar(50) DEFAULT NULL,
+  `timestamp_utc` timestamp NULL DEFAULT NULL,
+  `source` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `weather_forecast`
+--
+
+CREATE TABLE `weather_forecast` (
+  `id` bigint(20) NOT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `forecast_date` date DEFAULT NULL,
+  `temperature_min` decimal(5,2) DEFAULT NULL,
+  `temperature_max` decimal(5,2) DEFAULT NULL,
+  `precipitation` decimal(5,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `weather_history`
+--
+
+CREATE TABLE `weather_history` (
+  `id` bigint(20) NOT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `parameter` varchar(50) DEFAULT NULL,
+  `value` decimal(6,2) DEFAULT NULL,
+  `timestamp_utc` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `weather_processed`
+--
+
+CREATE TABLE `weather_processed` (
+  `id` bigint(20) NOT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `avg_temperature` decimal(5,2) DEFAULT NULL,
+  `avg_humidity` decimal(5,2) DEFAULT NULL,
+  `avg_pressure` decimal(6,2) DEFAULT NULL,
+  `period_start` timestamp NULL DEFAULT NULL,
+  `period_end` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `weather_sources`
+--
+
+CREATE TABLE `weather_sources` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `api_url` varchar(255) DEFAULT NULL,
+  `priority` int(11) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `weather_thresholds`
+--
+
+CREATE TABLE `weather_thresholds` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `parameter` varchar(50) DEFAULT NULL,
+  `min_value` decimal(6,2) DEFAULT NULL,
+  `max_value` decimal(6,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `api_credentials`
+--
+ALTER TABLE `api_credentials`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `source_id` (`source_id`);
+
+--
+-- Индексы таблицы `api_errors`
+--
+ALTER TABLE `api_errors`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `source_id` (`source_id`);
+
+--
+-- Индексы таблицы `favorites`
+--
+ALTER TABLE `favorites`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `location_id` (`location_id`);
+
+--
+-- Индексы таблицы `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `notification_channels`
+--
+ALTER TABLE `notification_channels`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `type_id` (`type_id`);
+
+--
+-- Индексы таблицы `notification_logs`
+--
+ALTER TABLE `notification_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `type_id` (`type_id`);
+
+--
+-- Индексы таблицы `notification_schedule`
+--
+ALTER TABLE `notification_schedule`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `type_id` (`type_id`);
+
+--
+-- Индексы таблицы `notification_types`
+--
+ALTER TABLE `notification_types`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code` (`code`);
+
+--
+-- Индексы таблицы `update_log`
+--
+ALTER TABLE `update_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `source_id` (`source_id`);
+
+--
+-- Индексы таблицы `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Индексы таблицы `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`);
+
+--
+-- Индексы таблицы `user_geo`
+--
+ALTER TABLE `user_geo`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Индексы таблицы `user_locations`
+--
+ALTER TABLE `user_locations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `location_id` (`location_id`);
+
+--
+-- Индексы таблицы `user_settings`
+--
+ALTER TABLE `user_settings`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Индексы таблицы `weather_cache`
+--
+ALTER TABLE `weather_cache`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location_id` (`location_id`);
+
+--
+-- Индексы таблицы `weather_data`
+--
+ALTER TABLE `weather_data`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location_id` (`location_id`),
+  ADD KEY `idx_weather_time` (`timestamp_utc`);
+
+--
+-- Индексы таблицы `weather_forecast`
+--
+ALTER TABLE `weather_forecast`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location_id` (`location_id`);
+
+--
+-- Индексы таблицы `weather_history`
+--
+ALTER TABLE `weather_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location_id` (`location_id`),
+  ADD KEY `idx_history_time` (`timestamp_utc`);
+
+--
+-- Индексы таблицы `weather_processed`
+--
+ALTER TABLE `weather_processed`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location_id` (`location_id`);
+
+--
+-- Индексы таблицы `weather_sources`
+--
+ALTER TABLE `weather_sources`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `weather_thresholds`
+--
+ALTER TABLE `weather_thresholds`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `location_id` (`location_id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `api_credentials`
+--
+ALTER TABLE `api_credentials`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `api_errors`
+--
+ALTER TABLE `api_errors`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `favorites`
+--
+ALTER TABLE `favorites`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `notification_channels`
+--
+ALTER TABLE `notification_channels`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `notification_logs`
+--
+ALTER TABLE `notification_logs`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `notification_schedule`
+--
+ALTER TABLE `notification_schedule`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `notification_types`
+--
+ALTER TABLE `notification_types`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `update_log`
+--
+ALTER TABLE `update_log`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `user_locations`
+--
+ALTER TABLE `user_locations`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `weather_cache`
+--
+ALTER TABLE `weather_cache`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `weather_data`
+--
+ALTER TABLE `weather_data`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `weather_forecast`
+--
+ALTER TABLE `weather_forecast`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `weather_history`
+--
+ALTER TABLE `weather_history`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `weather_processed`
+--
+ALTER TABLE `weather_processed`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `weather_sources`
+--
+ALTER TABLE `weather_sources`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `weather_thresholds`
+--
+ALTER TABLE `weather_thresholds`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `api_credentials`
+--
+ALTER TABLE `api_credentials`
+  ADD CONSTRAINT `api_credentials_ibfk_1` FOREIGN KEY (`source_id`) REFERENCES `weather_sources` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `api_errors`
+--
+ALTER TABLE `api_errors`
+  ADD CONSTRAINT `api_errors_ibfk_1` FOREIGN KEY (`source_id`) REFERENCES `weather_sources` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `favorites`
+--
+ALTER TABLE `favorites`
+  ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `notification_channels`
+--
+ALTER TABLE `notification_channels`
+  ADD CONSTRAINT `notification_channels_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `notification_channels_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `notification_types` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `notification_logs`
+--
+ALTER TABLE `notification_logs`
+  ADD CONSTRAINT `notification_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `notification_logs_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `notification_types` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `notification_schedule`
+--
+ALTER TABLE `notification_schedule`
+  ADD CONSTRAINT `notification_schedule_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `notification_schedule_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `notification_types` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `update_log`
+--
+ALTER TABLE `update_log`
+  ADD CONSTRAINT `update_log_ibfk_1` FOREIGN KEY (`source_id`) REFERENCES `weather_sources` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `user_geo`
+--
+ALTER TABLE `user_geo`
+  ADD CONSTRAINT `user_geo_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `user_locations`
+--
+ALTER TABLE `user_locations`
+  ADD CONSTRAINT `user_locations_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `user_locations_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `user_settings`
+--
+ALTER TABLE `user_settings`
+  ADD CONSTRAINT `user_settings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `weather_cache`
+--
+ALTER TABLE `weather_cache`
+  ADD CONSTRAINT `weather_cache_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `weather_data`
+--
+ALTER TABLE `weather_data`
+  ADD CONSTRAINT `weather_data_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `weather_forecast`
+--
+ALTER TABLE `weather_forecast`
+  ADD CONSTRAINT `weather_forecast_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `weather_history`
+--
+ALTER TABLE `weather_history`
+  ADD CONSTRAINT `weather_history_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `weather_processed`
+--
+ALTER TABLE `weather_processed`
+  ADD CONSTRAINT `weather_processed_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `weather_thresholds`
+--
+ALTER TABLE `weather_thresholds`
+  ADD CONSTRAINT `weather_thresholds_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `weather_thresholds_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
