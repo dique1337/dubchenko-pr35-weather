@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: home.php");
             exit;
         } else {
-            $error = "Неверный логин или пароль";
+            $error = "Неверный логин или пароль"; // ошибка
         }
     }
 }
