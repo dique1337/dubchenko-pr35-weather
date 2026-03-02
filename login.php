@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     if (empty($login) || empty($password)) {
-        $error = 'Заполните все поля!';
+        $error = 'Заполните все поля!'; // комментарий
     } else {
         // Ищем пользователя по логину
         $stmt = $pdo->prepare("SELECT * FROM users WHERE login = ? AND is_active = 1");
