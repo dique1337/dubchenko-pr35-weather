@@ -1,0 +1,257 @@
+/* ==========================================
+   Подключение шрифта
+========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
+/* ==========================================
+   Общие стили
+========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+/* ==========================================
+   Карточки (универсальные)
+========================================== */
+.card {
+    width: 380px;
+    max-width: 95%;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    color: #fff;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Заголовки */
+.card h1,
+.card h2 {
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* ==========================================
+   Формы
+========================================== */
+.card input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.card input:focus {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+/* Кнопки */
+.card button,
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #ffffff;
+    color: #0077ff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.card button:hover,
+.logout-btn:hover {
+    background: #0077ff;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Ссылки */
+.card a {
+    display: block;
+    margin-top: 15px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.card a:hover {
+    text-decoration: underline;
+}
+
+/* Ошибки */
+.error {
+    background: rgba(255, 0, 0, 0.25);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* ==========================================
+   Home page (дополнительный стиль)
+========================================== */
+.main-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.main-card {
+    width: 600px;
+    max-width: 95%;
+    padding: 50px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    color: #fff;
+}
+
+.main-card h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.welcome {
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+.weather-placeholder {
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.25);
+    margin-bottom: 30px;
+}
+
+/* Кнопка выхода */
+.logout-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #0077ff;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #0077ff;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+/* ==========================================
+   Контейнер для авторизации
+========================================== */
+.auth-container {
+    width: 380px;
+    max-width: 95%;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    color: #fff;
+    text-align: center;
+}
+
+/* Заголовки */
+.auth-container h2 {
+    margin-bottom: 25px;
+    font-weight: 600;
+    font-size: 28px;
+}
+
+/* ==========================================
+   Формы авторизации
+========================================== */
+.auth-container input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.auth-container input:focus {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+/* Кнопки */
+.auth-container button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #ffffff;
+    color: #0077ff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.auth-container button:hover {
+    background: #0077ff;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Ссылки */
+.auth-container a {
+    display: block;
+    margin-top: 15px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
+}
+
+/* Ошибки */
+.auth-container .error {
+    background: rgba(255, 0, 0, 0.25);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* ==========================================
+   Адаптив для мобильных
+========================================== */
+@media (max-width: 500px) {
+    .auth-container {
+        padding: 30px 20px;
+    }
+
+    .auth-container h2 {
+        font-size: 24px;
+    }
+}

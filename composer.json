@@ -1,0 +1,12 @@
+{
+    "name": "pvt-9-23/weather",
+    "autoload": {
+        "psr-4": {
+            "Pvt923\\Weather\\": "src/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+        "fakerphp/faker": "^1.24"
+    }
+}
