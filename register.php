@@ -8,7 +8,6 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Ввод кода подтверждения
     if (isset($_POST['code_submit'])) {
         $login = trim($_POST['login']);
         $code  = trim($_POST['code']);
@@ -30,13 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
     } else {
-        // Регистрация нового пользователя
         $login    = trim($_POST['login']);
         $email    = trim($_POST['email']);
         $password = $_POST['password'];
         $confirm  = $_POST['confirm'];
 
-        if (substr($email, -10) !== '@gmail.com') {
+        // --- ДОБАВЛЕНА ПРОВЕРКА ЛОГИНА ---
+        if (mb_strlen($login) < 5) {
+            $error = "Логин должен быть не менее 5 символов";
+        } elseif (substr($email, -10) !== '@gmail.com') {
             $error = "Email должен оканчиваться на @gmail.com";
         } elseif (strlen($password) < 6) {
             $error = "Пароль минимум 6 символов";
@@ -73,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Регистрация | Weather</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -100,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <form method="POST">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="login" name="login"
-                                       placeholder="Логин" required value="<?= htmlspecialchars($_POST['login'] ?? '') ?>">
-                                <label for="login">👤 Логин</label>
+                                       placeholder="Логин" required minlength="5" value="<?= htmlspecialchars($_POST['login'] ?? '') ?>">
+                                <label for="login">👤 Логин (минимум 5 символов)</label>
                             </div>
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="email" name="email"
@@ -145,7 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
