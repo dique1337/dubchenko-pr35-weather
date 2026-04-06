@@ -8,6 +8,7 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // Ввод кода подтверждения
     if (isset($_POST['code_submit'])) {
         $login = trim($_POST['login']);
         $code  = trim($_POST['code']);
@@ -29,14 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
     } else {
+        // Регистрация нового пользователя
         $login    = trim($_POST['login']);
         $email    = trim($_POST['email']);
         $password = $_POST['password'];
         $confirm  = $_POST['confirm'];
 
-        // --- ДОБАВЛЕНА ПРОВЕРКА ЛОГИНА ---
+        // Разбиваем email, чтобы проверить длину части до @
+        $email_parts = explode('@', $email);
+        $email_name = $email_parts[0] ?? '';
+
         if (mb_strlen($login) < 5) {
             $error = "Логин должен быть не менее 5 символов";
+        } elseif (mb_strlen($email_name) < 5) {
+            $error = "Название почты (до @) должно быть не менее 5 символов";
         } elseif (substr($email, -10) !== '@gmail.com') {
             $error = "Email должен оканчиваться на @gmail.com";
         } elseif (strlen($password) < 6) {
@@ -100,18 +107,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <form method="POST">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="login" name="login"
-                                       placeholder="Логин" required minlength="5" value="<?= htmlspecialchars($_POST['login'] ?? '') ?>">
-                                <label for="login">👤 Логин (минимум 5 символов)</label>
+                                       placeholder="Логин" required minlength="5"
+                                       value="<?= htmlspecialchars($_POST['login'] ?? '') ?>">
+                                <label for="login">👤 Логин (мин. 5 симв.)</label>
                             </div>
+
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="email" name="email"
-                                       placeholder="Email" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
-                                <label for="email">📧 Email адрес</label>
+                                       placeholder="Email" required
+                                       pattern="[a-zA-Z0-0.]{5,}@gmail\.com"
+                                       title="Минимум 5 символов до @gmail.com"
+                                       value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                                <label for="email">📧 Email (мин. 5 симв. до @)</label>
                             </div>
+
                             <div class="form-floating mb-3">
                                 <input type="password" class="form-control" id="password" name="password"
                                        placeholder="Пароль" required minlength="6">
-                                <label for="password">🔒 Пароль</label>
+                                <label for="password">🔒 Пароль (мин. 6 симв.)</label>
                             </div>
                             <div class="form-floating mb-4">
                                 <input type="password" class="form-control" id="confirm" name="confirm"
