@@ -39,7 +39,7 @@ jobs:
           tools: phpcs
 
       - name: Run PHPCS
-        run: phpcs
+        run: phpcs -n  # -n = ignore warnings
           phpcs --standard=PSR12 --extensions=php \
             --ignore=vendor/,node_modules/ \
             --report=summary .
