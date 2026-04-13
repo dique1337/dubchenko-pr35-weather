@@ -1,4 +1,4 @@
-name: PHP Syntax Check
+name: PHP Checks
 
 on:
   push:
@@ -21,7 +21,26 @@ jobs:
 
       - name: Check PHP syntax
         run: |
-          # Ищем все .php файлы, исключая папку vendor
-          # Если находим ошибку, выходим с кодом 1
-          find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \; | grep "Parse error" && exit 1 || true
-          echo "All PHP files passed syntax check!"
+          find . -name '*.php' -not -path './vendor/*' -exec php -l {} \; | grep "Parse error" && exit 1 || true
+          echo 'All PHP files passed syntax check!'
+
+  phpcs:
+    name: Code Style Check
+    needs: php-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP with PHPCS
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: phpcs
+
+      - name: Run PHPCS
+        run: phpcs
+          phpcs --standard=PSR12 --extensions=php \
+            --ignore=vendor/,node_modules/ \
+            --report=summary .
+          echo 'Code style check completed!'
