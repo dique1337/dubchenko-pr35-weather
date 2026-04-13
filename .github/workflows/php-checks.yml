@@ -1,4 +1,4 @@
-name: PHP Checks
+name: PHP Syntax Check
 
 on:
   push:
@@ -10,10 +10,9 @@ jobs:
   php-lint:
     name: PHP Syntax Check
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -22,7 +21,7 @@ jobs:
 
       - name: Check PHP syntax
         run: |
-          find . -name '*.php' -not -path './vendor/*' \
-            -exec php -l {} \; | grep -v 'No syntax errors'
-          if [ $? -eq 0 ]; then exit 1; fi
-          echo 'All PHP files passed syntax check!'
+          # Ищем все .php файлы, исключая папку vendor
+          # Если находим ошибку, выходим с кодом 1
+          find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \; | grep "Parse error" && exit 1 || true
+          echo "All PHP files passed syntax check!"
