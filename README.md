@@ -2,7 +2,7 @@
 Скопируйте шаблон и заполните своими данными:
 # [Модуль прогноза погоды]
 
-![PHP Checks](https://github.com/dique1337/dubchenko-pr35-weather/workflows/php-checks.yml/badge.svg)
+![PHP Checks](https://github.com/dique1337/dubchenko-pr35-weather/workflows/php-checks.yml)
 ![PHP Version](https://img.shields.io/badge/PHP-8.1-blue)
 
 ## Описание
