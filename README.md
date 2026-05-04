@@ -5,6 +5,10 @@
 ![PHP Checks](https://github.com/dique1337/dubchenko-pr35-weather/actions/workflows/php-checks.yml)
 ![PHP Version](https://img.shields.io/badge/PHP-8.1-blue)
 
+![Version](https://img.shields.io/badge/version-1.0.0-green)
+
+Последний релиз: [v1.0.0](https://github.com/ВАШ_ЛОГИН/ВАШ_РЕПО/releases/tag/v1.0.0)
+
 ## Описание
 Модуль предназначен для получения и отображения актуальных метеоданных через внешние API. Реализован в рамках учебного проекта по веб-разработке. Позволяет пользователям просматривать прогноз погоды, а авторизованным пользователям — настраивать список отслеживаемых городов.
 
